@@ -41,20 +41,22 @@ jobs:
           labels: ${{ steps.metal.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          printf "%s\n" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 54.254.253.188 >> ~/.ssh/known_hosts
-
-      - name: Deploy ELK via Docker Compose
-        run: |
-          ssh github-action@54.254.253.188 << 'EOF'
-            cd /data/elk
-            docker-compose pull
-            docker-compose up -d
-          EOF
+    deploy:
+      runs-on: ubuntu-latest
+      steps:          
+        - name: Setup SSH Agent
+          uses: webfactory/ssh-agent@v0.9.0
+          with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+            
+        - name: Add server to known hosts
+          run: |
+            ssh-keyscan -H 54.254.253.188 >> ~/.ssh/known_hosts
+            
+        - name: Deploy ELK via Docker Compose
+          run: |
+            ssh github-action@54.254.253.188 << 'EOF'
+              cd /data/elk
+              docker-compose pull
+              docker-compose up -d
+            EOF
