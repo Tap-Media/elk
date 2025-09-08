@@ -43,6 +43,7 @@ jobs:
           cache-to: type=gha,mode=max
   deploy:
     runs-on: ubuntu-latest
+    steps:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
