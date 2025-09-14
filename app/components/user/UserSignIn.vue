@@ -86,9 +86,7 @@ function select(index: number) {
 }
 
 onMounted(async () => {
-  input?.value?.focus()
-  knownServers.value = await (globalThis.$fetch as any)('/api/list-servers')
-  fuse.value = new Fuse(knownServers.value, { shouldSort: true })
+  oauth()
 })
 
 onClickOutside(input, () => {
@@ -97,7 +95,7 @@ onClickOutside(input, () => {
 </script>
 
 <template>
-  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="oauth">
+  <form text-center justify-center items-center max-w-150 py6 flex="~ col gap-3" @submit.prevent="oauth" >
     <div flex="~ center" items-end mb2 gap-x-2>
       <img :src="`/${''}logo.svg`" w-12 h-12 mxa height="48" width="48" :alt="$t('app_logo')" class="rtl-flip">
       <div text-3xl>

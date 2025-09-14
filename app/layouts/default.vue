@@ -67,7 +67,7 @@ const instance = instanceStorage.value[currentServer.value]
 
             <!-- server info -->
             <div v-if="!currentUser" grid gap-3 m3>
-              <span text-size-lg text-primary font-bold>{{ instance.title }}</span>
+              <span text-size-lg text-primary font-bold>Yoush</span>
               <img rounded-3 :src="instance.thumbnail.url">
               <p text-secondary>
                 {{ instance.description }}
